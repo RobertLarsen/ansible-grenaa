@@ -1,0 +1,30 @@
+---
+- name: Install asciidoc
+  become: true
+  apt:
+      name:
+      - asciidoc
+      - inkscape
+      - source-highlight
+
+- name: Get slidy2
+  get_url: url=https://storage.googleapis.com/google-code-archive-downloads/v2/code.google.com/asciidoc-slidy2-backend-plugin/slidy2-v1.0.3.zip
+           dest=/tmp/slidy2-v1.0.3.zip
+
+- name: Install slidy2 plugin
+  shell: asciidoc --backend install /tmp/slidy2-v1.0.3.zip
+  args:
+      creates: "{{ansible_user_dir}}/.asciidoc/backends/slidy2"
+ 
+- name: Install slidy stylesheet
+  file:
+      path: "{{ansible_user_dir}}/.asciidoc/backends/slidy2/prosa.css"
+      src: /vagrant/presentations/prosa.css 
+      state: link
+
+- name: Build presentations
+  shell: make index.html
+  args:
+      chdir: "{{item}}"
+      creates: "{{item}}/index.html"
+  with_items: "{{presentations}}"

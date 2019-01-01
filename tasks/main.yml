@@ -1,0 +1,82 @@
+---
+- name: Install pwntools
+  become: true
+  pip: name=pwntools
+
+- name: Install binutils and dev tools
+  become: true
+  apt:
+      name:
+      - binutils-mips-linux-gnu
+      - binutils-arm-linux-gnueabi
+      - libc6-dev-i386
+      - execstack
+      - nasm
+      - curl
+      - libcapstone3
+
+- name: See if we should install asciidoc
+  stat: path=/vagrant/build_asciidoc
+  register: build_asciidoc
+
+- name: Install asciidoc
+  when: build_asciidoc.stat.isreg is defined and build_asciidoc.stat.isreg
+  include_tasks: asciidoc.yml
+
+- name: Create flag files
+  shell: "echo $(head -c 20 /dev/urandom | md5sum | head -c 32) >{{item}}"
+  args:
+      creates: "{{item}}"
+  with_items: "{{flag_files}}"
+
+- name: Start services
+  become: true
+  docker_container:
+      name: "{{item.name}}"
+      command: "{{item.path}} --port {{item.port}}"
+      restart_policy: always
+      volumes:
+          - "{{item.flag}}:/flag"
+      ports:
+          - "{{item.port}}:{{item.port}}"
+      image: robertlarsen/prosaworkshop:latest
+  with_items: "{{services}}"
+
+- name: Start fmtstr challenge from Bornhack CTF 2017
+  become: true
+  docker_container:
+      name: fmtstr
+      restart_policy: always
+      volumes:
+          - /vagrant/presentations/04-advanced-exploitation/assignments/flag4
+      ports:
+          - "31337:31337"
+      image: robertlarsen/fmtstr:latest
+      env:
+          USER: fmtstr
+          PORT: 31337
+          FLAG1: "FLAG{Okay! So you can leak from the stack}"
+          FLAG2: "FLAG{GOOD! You can even follow pointers}"
+          FLAG3: "FLAG{WAUW! You even defeated my ASLR}"
+
+- name: Fetch binaries
+  become: true
+  shell: "docker cp integer_conversion:/{{item.project}}/{{item.binary}} /vagrant/presentations/{{item.project}}/assignments/{{item.binary}}"
+  args:
+      creates: "/vagrant/presentations/{{item.project}}/assignments/{{item.binary}}"
+  with_items: "{{service_executables}}"
+
+- name: Set limit for core dumps
+  become: true
+  lineinfile:
+      line: "vagrant     soft      core      unlimited"
+      path: /etc/security/limits.conf
+
+- name: Bashrc
+  import_tasks: bashrc.yml
+
+- name: RunShellcode
+  import_tasks: runshellcode.yml
+
+- name: Install gdb
+  import_tasks: gdb.yml

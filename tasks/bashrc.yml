@@ -1,0 +1,18 @@
+---
+- name: Copy bashrc
+  become: true
+  copy:
+      src: prosa.bashrc
+      dest: /etc/prosa.bashrc
+
+- name: Set bashrc file permissions
+  become: true
+  file:
+      path: /etc/prosa.bashrc
+      mode: 0755
+
+- name: Execute bashrc when starting a shell
+  become: true
+  lineinfile:
+      line: . /etc/prosa.bashrc
+      path: /etc/bash.bashrc

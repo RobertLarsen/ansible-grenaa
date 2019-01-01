@@ -1,0 +1,20 @@
+---
+- name: Clone RunShellcode
+  git:
+      repo: https://github.com/RobertLarsen/RunShellcode.git
+      dest: "{{ansible_user_dir}}/.repositories/RunShellcode"
+
+- name: Compile 32 bit run_shellcode
+  become: true
+  shell: gcc -m32 -o /usr/bin/run_shellcode32 run_shellcode.c
+  args:
+      chdir: "{{ansible_user_dir}}/.repositories/RunShellcode"
+      creates: /usr/bin/run_shellcode32
+
+
+- name: Compile 64 bit run_shellcode
+  become: true
+  shell: gcc -o /usr/bin/run_shellcode64 run_shellcode.c
+  args:
+      chdir: "{{ansible_user_dir}}/.repositories/RunShellcode"
+      creates: /usr/bin/run_shellcode64
