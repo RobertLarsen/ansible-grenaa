@@ -1,11 +1,6 @@
 export A=/vagrant/presentations/02-exploitation/assignments/integer_conversion
-export B=/vagrant/presentations/02-exploitation/assignments/integer_overflow
-export C=/vagrant/presentations/02-exploitation/assignments/integer_conversion_canary
-export D=/vagrant/presentations/02-exploitation/assignments/integer_overflow_canary
-export E=/vagrant/presentations/02-exploitation/assignments/integer_conversion_canary_pie
-export F=/vagrant/presentations/02-exploitation/assignments/integer_overflow_canary_pie
-export G=/vagrant/presentations/04-advanced-exploitation//assignments/fmt
-export H=/vagrant/presentations/04-advanced-exploitation//assignments/fmt_nx
+export B=/vagrant/presentations/02-exploitation/assignments/integer_conversion_canary
+export C=/vagrant/presentations/02-exploitation/assignments/integer_conversion_canary_pie
 export TERM=xterm-256color
 
 export EDITOR=vim
@@ -27,7 +22,7 @@ function pwn(){
 
 from pwn import *
 
-context(arch = "i386", os = "linux")
+context(arch="i386", os="linux")
 
 SHELLCODE = asm(shellcraft.findpeersh())
 EOF
@@ -46,3 +41,5 @@ function msfvenom(){
 function msfconsole(){
     docker run --rm -it robertlarsen/metasploit:latest msfconsole $*
 }
+
+export PS1='$ '

@@ -24,7 +24,7 @@
   include_tasks: asciidoc.yml
 
 - name: Create flag files
-  shell: "echo $(head -c 20 /dev/urandom | md5sum | head -c 32) >{{item}}"
+  shell: "echo 'FLAG{'$(head -c 20 /dev/urandom | md5sum | head -c 32)'}' >{{item}}"
   args:
       creates: "{{item}}"
   with_items: "{{flag_files}}"
@@ -41,23 +41,6 @@
           - "{{item.port}}:{{item.port}}"
       image: robertlarsen/prosaworkshop:latest
   with_items: "{{services}}"
-
-- name: Start fmtstr challenge from Bornhack CTF 2017
-  become: true
-  docker_container:
-      name: fmtstr
-      restart_policy: always
-      volumes:
-          - /vagrant/presentations/04-advanced-exploitation/assignments/flag4
-      ports:
-          - "31337:31337"
-      image: robertlarsen/fmtstr:latest
-      env:
-          USER: fmtstr
-          PORT: 31337
-          FLAG1: "FLAG{Okay! So you can leak from the stack}"
-          FLAG2: "FLAG{GOOD! You can even follow pointers}"
-          FLAG3: "FLAG{WAUW! You even defeated my ASLR}"
 
 - name: Fetch binaries
   become: true

@@ -4,43 +4,21 @@ presentations:
     - /vagrant/presentations/01-reversing
     - /vagrant/presentations/02-exploitation
     - /vagrant/presentations/03-shellcoding
-    - /vagrant/presentations/04-advanced-exploitation
 
 flag_files:
     - /vagrant/presentations/02-exploitation/assignments/integer_conversion.flag
     - /vagrant/presentations/02-exploitation/assignments/integer_conversion_aslr.flag
     - /vagrant/presentations/02-exploitation/assignments/integer_conversion_canary.flag
     - /vagrant/presentations/02-exploitation/assignments/integer_conversion_canary_pie.flag
-    - /vagrant/presentations/02-exploitation/assignments/integer_overflow.flag
-    - /vagrant/presentations/02-exploitation/assignments/integer_overflow_aslr.flag
-    - /vagrant/presentations/02-exploitation/assignments/integer_overflow_canary.flag
-    - /vagrant/presentations/02-exploitation/assignments/integer_overflow_canary_pie.flag
-    - /vagrant/presentations/03-shellcoding/assignments/treebuilder.flag
-    - /vagrant/presentations/03-shellcoding/assignments/shelly.flag
-    - /vagrant/presentations/04-advanced-exploitation/assignments/fmt.flag
-    - /vagrant/presentations/04-advanced-exploitation/assignments/fmt_nx.flag
 
 services:
     - { name: integer_conversion, port: 10001, flag: /vagrant/presentations/02-exploitation/assignments/integer_conversion.flag, path: /02-exploitation/integer_conversion }
-    - { name: integer_overflow, port: 10002, flag: /vagrant/presentations/02-exploitation/assignments/integer_overflow.flag, path: /02-exploitation/integer_overflow }
     - { name: integer_conversion_aslr, port: 10003, flag: /vagrant/presentations/02-exploitation/assignments/integer_conversion_aslr.flag, path: /02-exploitation/integer_conversion }
-    - { name: integer_overflow_aslr, port: 10004, flag: /vagrant/presentations/02-exploitation/assignments/integer_overflow_aslr.flag, path: /02-exploitation/integer_overflow }
     - { name: integer_conversion_canary, port: 10005, flag: /vagrant/presentations/02-exploitation/assignments/integer_conversion_canary.flag, path: /02-exploitation/integer_conversion_canary }
-    - { name: integer_overflow_canary, port: 10006, flag: /vagrant/presentations/02-exploitation/assignments/integer_overflow_canary.flag, path: /02-exploitation/integer_overflow_canary }
     - { name: integer_conversion_canary_pie, port: 10007, flag: /vagrant/presentations/02-exploitation/assignments/integer_conversion_canary_pie.flag, path: /02-exploitation/integer_conversion_canary_pie }
-    - { name: integer_overflow_canary_pie, port: 10008, flag: /vagrant/presentations/02-exploitation/assignments/integer_overflow_canary_pie.flag, path: /02-exploitation/integer_overflow_canary_pie }
-    - { name: treebuilder, port: 9191, flag: /vagrant/presentations/03-shellcoding/assignments/treebuilder.flag, path: /03-shellcoding/treebuilder }
-    - { name: format_string, port: 20001, flag: /vagrant/presentations/04-advanced-exploitation/assignments/fmt.flag, path: /04-advanced-exploitation/fmt }
-    - { name: format_string_nx, port: 20002, flag: /vagrant/presentations/04-advanced-exploitation/assignments/fmt_nx.flag, path: /04-advanced-exploitation/fmt_nx }
 
 service_executables:
     - { project: 02-exploitation,          binary: integer_conversion }
     - { project: 02-exploitation,          binary: integer_conversion_canary }
     - { project: 02-exploitation,          binary: integer_conversion_canary_pie }
-    - { project: 02-exploitation,          binary: integer_overflow }
-    - { project: 02-exploitation,          binary: integer_overflow_canary }
-    - { project: 02-exploitation,          binary: integer_overflow_canary_pie }
     - { project: 03-shellcoding,           binary: shelly }
-    - { project: 03-shellcoding,           binary: treebuilder }
-    - { project: 04-advanced-exploitation, binary: fmt }
-    - { project: 04-advanced-exploitation, binary: fmt_nx }
