@@ -1,5 +1,6 @@
 galaxy_info:
   author: Robert Larsen
+  role_name: grenaa
   description: Role for installing and configuring a box for the Grenaa binary exploitation workshop
   company: None
   license: GPLv2
