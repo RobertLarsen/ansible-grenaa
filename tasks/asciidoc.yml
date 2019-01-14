@@ -21,10 +21,3 @@
       path: "{{ansible_user_dir}}/.asciidoc/backends/slidy2/prosa.css"
       src: /vagrant/presentations/prosa.css 
       state: link
-
-- name: Build presentations
-  shell: make index.html
-  args:
-      chdir: "{{item}}"
-      creates: "{{item}}/index.html"
-  with_items: "{{presentations}}"
